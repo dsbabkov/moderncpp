@@ -14,6 +14,5 @@ jobs:
         run: cmake --build .
         working-directory: build
       - name: echo build number
-        run: ./helloworld
-        working-directory: build
+        run: ./build/Task1/Part1/helloworld
 
