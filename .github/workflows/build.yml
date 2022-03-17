@@ -13,5 +13,6 @@ jobs:
       - name: build
         run: cmake --build .
         working-directory: build
-      - run: echo "Build number is $BUILD_NUMBER"
+      - run: echo "Build number is ${github.run_number}"
+      - run: echo "Build number is ${github.run_attempt}"
 
