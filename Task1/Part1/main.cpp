@@ -1,6 +1,11 @@
 #include <iostream>
 
+#ifndef BUILD_NUMBER
+    #error No build number set
+#endif
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << "build " << BUILD_NUMBER << "\n"
+                 "Hello, World!\n";
     return 0;
 }

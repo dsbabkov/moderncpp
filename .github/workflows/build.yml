@@ -8,11 +8,12 @@ jobs:
         uses: actions/checkout@v2
       - run: mkdir build
       - name: cmake
-        run: cmake -DCMAKE_BUILD_TYPE=Release ../
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_NUMBER=${{ github.run_number }} ../
         working-directory: build
       - name: build
         run: cmake --build .
         working-directory: build
-      - run: echo "Build number is ${{ github.run_number }}"
-      - run: echo "Build number is ${{ github.run_attempt }}"
+      - name: echo build number
+        run: ./helloworld
+        working-directory: build
 
