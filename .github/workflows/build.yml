@@ -16,6 +16,9 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: mkdir build
-      - run: cd build
-      - run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ../
-      - run: cmake --build .
+      - name: cmake
+        run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ../
+        working-directory: build
+      - name: build
+        run: cmake --build .
+        working-directory: build
