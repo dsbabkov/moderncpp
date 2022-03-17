@@ -17,4 +17,5 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: mkdir build
       - run: cd build
-      - run: cmake
+      - run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ../
+      - run: cmake --build .
