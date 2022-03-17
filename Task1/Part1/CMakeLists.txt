@@ -3,3 +3,4 @@ project(helloworld)
 
 add_compile_definitions(BUILD_NUMBER=${BUILD_NUMBER})
 add_executable(${PROJECT_NAME} main.cpp)
+install(TARGETS ${PROJECT_NAME})

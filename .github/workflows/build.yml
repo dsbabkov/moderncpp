@@ -14,7 +14,7 @@ jobs:
         run: cmake --build .
         working-directory: build
       - name: Install
-        run: make DESTDIR=../install install
+        run: cmake --install . --prefix ../install
         working-directory: build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3

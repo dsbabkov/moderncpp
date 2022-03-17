@@ -7,6 +7,7 @@ if (BUILD_NUMBER)
     message("Build number: ${BUILD_NUMBER}")
 else()
     message("No build number, setting build number to 0")
+    set(BUILD_NUMBER 0)
 endif()
 
 add_subdirectory(Task1)
