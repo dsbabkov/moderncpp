@@ -7,11 +7,14 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - run: mkdir build
-      - name: cmake
+      - name: Prepare
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_NUMBER=${{ github.run_number }} ../
         working-directory: build
-      - name: build
+      - name: Build
         run: cmake --build .
+        working-directory: build
+      - name: Install
+        run: make DESTDIR=../install install
         working-directory: build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
