@@ -31,48 +31,59 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
+class IpAddress {
+public:
+    explicit IpAddress(const std::string &str)
+    {
+        unsigned offset = 32;
+        for (const auto &octStr: split(str, '.')) {
+            offset -= 8;
+            ip_ |= octetStrToInt(octStr) << offset;
+        }
+    }
+
+    bool operator<(const IpAddress &o) const {
+        return ip_ < o.ip_;
+    }
+
+    std::string toString() const {
+        return std::to_string((ip_ >> 24) & 0xFF) + '.' +
+                std::to_string((ip_ >> 16) & 0xFF) + '.' +
+                std::to_string((ip_ >> 8) & 0xFF) + '.' +
+                std::to_string(ip_ & 0xFF);
+    }
+
+private:
+    uint32_t octetStrToInt(std::string_view str) {
+        uint32_t result;
+        std::from_chars(str.data(), str.data() + str.size(), result);
+        return result;
+    };
+
+private:
+    uint32_t ip_ = 0;
+};
+
+std::ostream &operator<<(std::ostream &os, const IpAddress &ip) {
+    return os << ip.toString();
+}
+
 int main(int argc, char const *argv[])
 {
     try
     {
-        std::vector<std::vector<std::string>> ip_pool;
+        std::vector<IpAddress> ip_pool;
 
         for(std::string line; std::getline(std::cin, line);)
         {
-            const auto v = split(line, '\t');
-            ip_pool.emplace_back(split(v.at(0), '.'));
+            ip_pool.emplace_back(split(line, '\t').at(0));
         }
 
-        constexpr auto readOctet = [](std::string_view str) {
-            int result;
-            std::from_chars(str.data(), str.data() + str.size(), result);
-            return result;
-        };
-
-        const auto ipToUInt = [readOctet](const std::vector<std::string> &strs) {
-            uint32_t result = 0;
-            unsigned offset = 32;
-            for (const auto &octStr: strs) {
-                offset -= 8;
-                result += readOctet(octStr) << offset;
-            }
-            return result;
-        };
-
-        std::sort(ip_pool.rbegin(), ip_pool.rend(), [&](const auto &ip1, const auto ip2) {
-            return ipToUInt(ip1) < ipToUInt(ip2);
-        });
+        std::sort(ip_pool.rbegin(), ip_pool.rend());
 
         for(const auto &ip: ip_pool)
         {
-            char dot[] = "\0";
-            for(const auto &ip_part: ip)
-            {
-                std::cout << dot;
-                dot[0] = '.';
-                std::cout << ip_part;
-            }
-            std::cout << std::endl;
+            std::cout << ip << std::endl;
         }
 
         // 222.173.235.246
