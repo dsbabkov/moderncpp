@@ -26,3 +26,4 @@ jobs:
         with:
           files: install/bin/*
           prerelease: true
+          tag_name: prerelease
