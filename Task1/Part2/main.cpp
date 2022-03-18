@@ -43,16 +43,14 @@ int main(int argc, char const *argv[])
 
         // TODO reverse lexicographically sort
 
-        for(std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+        for(const auto &ip: ip_pool)
         {
-            for(std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
+            char dot[] = "\0";
+            for(const auto &ip_part: ip)
             {
-                if (ip_part != ip->cbegin())
-                {
-                    std::cout << ".";
-
-                }
-                std::cout << *ip_part;
+                std::cout << dot;
+                dot[0] = '.';
+                std::cout << ip_part;
             }
             std::cout << std::endl;
         }
