@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <tuple>
+#include <charconv>
 
 // ("",  '.') -> [""]
 // ("11", '.') -> ["11"]
@@ -41,7 +43,25 @@ int main(int argc, char const *argv[])
             ip_pool.emplace_back(split(v.at(0), '.'));
         }
 
-        // TODO reverse lexicographically sort
+        constexpr auto readOctet = [](std::string_view str) {
+            int result;
+            std::from_chars(str.data(), str.data() + str.size(), result);
+            return result;
+        };
+
+        const auto ipToUInt = [readOctet](const std::vector<std::string> &strs) {
+            uint32_t result = 0;
+            unsigned offset = 32;
+            for (const auto &octStr: strs) {
+                offset -= 8;
+                result += readOctet(octStr) << offset;
+            }
+            return result;
+        };
+
+        std::sort(ip_pool.rbegin(), ip_pool.rend(), [&](const auto &ip1, const auto ip2) {
+            return ipToUInt(ip1) < ipToUInt(ip2);
+        });
 
         for(const auto &ip: ip_pool)
         {
