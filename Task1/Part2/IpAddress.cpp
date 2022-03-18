@@ -27,6 +27,10 @@ uint32_t IpAddress::octetStrToInt(std::string_view str) {
     return result;
 }
 
+uint32_t IpAddress::octet(size_t n) const {
+    return (ip_ & (0xFF000000u >> (n * 8))) >> (24 - n * 8);
+}
+
 std::ostream &operator<<(std::ostream &os, const IpAddress &ip) {
     return os << ip.toString();
 }

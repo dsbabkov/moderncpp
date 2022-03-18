@@ -9,6 +9,7 @@ public:
     bool operator<(const IpAddress &o) const;
 
     std::string toString() const;
+    uint32_t octet(size_t n) const;
 
 private:
     static uint32_t octetStrToInt(std::string_view str);

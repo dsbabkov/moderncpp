@@ -28,8 +28,13 @@ int main(int argc, char const *argv[])
         // 1.29.168.152
         // 1.1.234.8
 
-        // TODO filter by first byte and output
-        // ip = filter(1)
+        for(const auto &ip: ip_pool)
+        {
+            if (ip.octet(0) != 1) {
+                continue;
+            }
+            std::cout << ip << std::endl;
+        }
 
         // 1.231.69.33
         // 1.87.203.225
@@ -37,15 +42,26 @@ int main(int argc, char const *argv[])
         // 1.29.168.152
         // 1.1.234.8
 
-        // TODO filter by first and second bytes and output
-        // ip = filter(46, 70)
+        for(const auto &ip: ip_pool)
+        {
+            if (ip.octet(0) != 46 || ip.octet(1) != 70) {
+                continue;
+            }
+            std::cout << ip << std::endl;
+        }
 
         // 46.70.225.39
         // 46.70.147.26
         // 46.70.113.73
         // 46.70.29.76
 
-        // TODO filter by any byte and output
+        for(const auto &ip: ip_pool)
+        {
+            if (ip.octet(0) != 46 && ip.octet(1) != 46 && ip.octet(2) != 46 && ip.octet(3) != 46) {
+                continue;
+            }
+            std::cout << ip << std::endl;
+        }
         // ip = filter_any(46)
 
         // 186.204.34.46
