@@ -33,12 +33,12 @@ int main(int argc, char const *argv[])
 {
     try
     {
-        std::vector<std::vector<std::string> > ip_pool;
+        std::vector<std::vector<std::string>> ip_pool;
 
         for(std::string line; std::getline(std::cin, line);)
         {
-            std::vector<std::string> v = split(line, '\t');
-            ip_pool.push_back(split(v.at(0), '.'));
+            const auto v = split(line, '\t');
+            ip_pool.emplace_back(split(v.at(0), '.'));
         }
 
         // TODO reverse lexicographically sort
