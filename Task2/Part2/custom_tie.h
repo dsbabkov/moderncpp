@@ -5,5 +5,5 @@
 #include "custom_tuple.h"
 
 auto custom_tie = [](auto &...args) {
-    return std::make_tuple(std::ref(args)...);
+    return make_custom_tuple(std::ref(args)...);
 };

@@ -8,7 +8,7 @@ auto getPerson() {
     const std::string secondName = "Ivanoff";
     const std::size_t age = 23;
     const std::string department = "Sale";
-    return std::make_tuple(
+    return make_custom_tuple(
             name, secondName, age, department
     );
 }
