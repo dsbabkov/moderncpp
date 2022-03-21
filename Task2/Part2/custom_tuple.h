@@ -53,6 +53,6 @@ custom_tupple<T, Rest...> &custom_tupple<T, Rest...>::operator=(const custom_tup
 }
 
 template <typename ...Args>
-custom_tupple<Args...> make_custom_tuple(const Args &...args) {
-    return custom_tupple<Args...>(args...);
+custom_tupple<strip_ref_t<Args>...> make_custom_tuple(const Args &...args) {
+    return custom_tupple<strip_ref_t<Args>...>(args...);
 }
