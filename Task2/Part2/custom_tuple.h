@@ -3,7 +3,6 @@
 #include <utility>
 #include "strip_ref.h"
 
-
 template <typename T, typename ...Rest>
 class custom_tupple: public custom_tupple<Rest...> {
 public:
@@ -16,7 +15,7 @@ public:
         return *this;
     }
 
-    typename strip_ref<T>::type t_;
+    strip_ref_t<T> t_;
 };
 
 template <typename T>
@@ -30,7 +29,7 @@ public:
         return *this;
     }
 
-    typename strip_ref<T>::type t_;
+    strip_ref_t<T> t_;
 };
 
 template<typename T>

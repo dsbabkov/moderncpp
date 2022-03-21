@@ -9,5 +9,8 @@ struct strip_ref {
 
 template <typename T>
 struct strip_ref<std::reference_wrapper<T>> {
-using type = T&;
+    using type = T&;
 };
+
+template <typename T>
+using strip_ref_t = typename strip_ref<T>::type;
