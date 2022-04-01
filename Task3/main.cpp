@@ -6,11 +6,29 @@
 template <typename T, size_t MaxObjectsAtATime>
 struct MyAllocator {
     using value_type = T;
-    MyAllocator() = default;
+    MyAllocator() {
+        std::cout << "Construct " << typeid(MyAllocator).name() << '\n';
+    }
+    ~MyAllocator() {
+        std::cout << "Destruct " << typeid(MyAllocator).name() << '\n';
+    }
+
+    MyAllocator(const MyAllocator &o) {
+        std::cout << "Copy construct " << typeid(MyAllocator).name() << '\n';
+    }
+
+    MyAllocator(MyAllocator &&o) noexcept {
+        std::cout << "Move construct " << typeid(MyAllocator).name() << '\n';
+    }
 
     template<typename U>
-    MyAllocator(const MyAllocator<U, MaxObjectsAtATime> &) {
+    MyAllocator(const MyAllocator<U, MaxObjectsAtATime> &o) {
+        std::cout << "Copy construct " << typeid(MyAllocator).name() << " from " << typeid(o).name() << '\n';
+    }
 
+    template<typename U>
+    MyAllocator(MyAllocator<U, MaxObjectsAtATime> &&o) {
+        std::cout << "Move construct " << typeid(MyAllocator).name() << " from " << typeid(o).name() << '\n';
     }
 
     template <typename U>
@@ -25,6 +43,7 @@ struct MyAllocator {
         }
         T *result = static_cast<T *>(std::malloc(sizeof(T) * n));
         if (!result) {
+            std::cerr << n << " object(s) requested to allocate. Unable to allocate\n";
             throw std::bad_alloc();
         }
         std::cout << "Allocate " << n << " element(s) of type " << typeid(T).name() << " at " << result << '\n';
