@@ -15,7 +15,13 @@ int main() {
     vec.push_back(3);
 
     MyVector<int, MyAllocator<int, 6>> vec2;
-    vec2.push_back(1);
-    vec2.push_back(2);
-    vec2.push_back(3);
+    vec2.push_back(4);
+    vec2.push_back(5);
+    vec2.push_back(6);
+
+    std::cout << "Vec2 values:\n";
+    for (const auto i: vec2) {
+        std::cout << i;
+    }
+    std::cout << std::endl;
 }

@@ -10,20 +10,41 @@ public:
 
     MyVector() = default;
 
-    void push_back(const T &value) {
-        T *newData_ = allocator_.allocate(size_ + 1);
-        for (size_t i = 0; i < size_; ++i) {
-            std::construct_at(newData_ + i, std::move(data_[i]));
-            std::destroy_at(newData_ + i);
-        }
-        std::construct_at(newData_ + size_);
-        allocator_.deallocate(data_, size_);
-        ++size_;
-        data_ = newData_;
-    }
+    void push_back(const T &value);
+    size_t size() const;
+    iterator begin();
+    iterator end();
 
 private:
     T *data_ = nullptr;
     size_t size_ = 0;
     Allocator allocator_;
 };
+
+template<typename T, typename Allocator>
+void MyVector<T, Allocator>::push_back(const T &value) {
+    T *newData_ = allocator_.allocate(size_ + 1);
+    for (size_t i = 0; i < size_; ++i) {
+        std::construct_at(newData_ + i, std::move(data_[i]));
+        std::destroy_at(newData_ + i);
+    }
+    std::construct_at(newData_ + size_, value);
+    allocator_.deallocate(data_, size_);
+    ++size_;
+    data_ = newData_;
+}
+
+template<typename T, typename Allocator>
+size_t MyVector<T, Allocator>::size() const {
+    return size_;
+}
+
+template<typename T, typename Allocator>
+typename MyVector<T, Allocator>::iterator MyVector<T, Allocator>::begin() {
+    return data_;
+}
+
+template<typename T, typename Allocator>
+typename MyVector<T, Allocator>::iterator MyVector<T, Allocator>::end() {
+    return data_ + size_;
+}
