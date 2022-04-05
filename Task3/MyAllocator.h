@@ -17,6 +17,8 @@ public:
     MyAllocator(MyAllocator<U, ObjectsCapacity> &&o);
     ~MyAllocator();
 
+    void report();
+
     template <typename U>
     struct rebind {
         using other = MyAllocator<U, ObjectsCapacity>;
@@ -39,7 +41,7 @@ MyAllocator<T, ObjectsCapacity>::MyAllocator() {
 template<typename T, size_t ObjectsCapacity>
 MyAllocator<T, ObjectsCapacity>::~MyAllocator() {
     std::cout << "Destruct " << typeid(MyAllocator).name() << '\n';
-    // FIXME: report
+    report();
     std::free(data_);
 }
 
@@ -93,7 +95,9 @@ T *MyAllocator<T, ObjectsCapacity>::allocate(std::size_t n) {
     }
 
     if (data_) {
-        // FIXME: report
+        std::cerr << "Unable to perform allocation of " << n << " element(s) of "
+                  << typeid(T).name() << " type\n";
+        report();
         throw std::bad_alloc();
     }
 
@@ -113,4 +117,22 @@ void MyAllocator<T, ObjectsCapacity>::deallocate(T *p, std::size_t n) noexcept {
     for (size_t i = 0; i < n; ++i) {
         free_.set(offset + i);
     }
+}
+
+template<typename T, size_t ObjectsCapacity>
+void MyAllocator<T, ObjectsCapacity>::report() {
+    if (!data_) {
+        std::cout << "Nothing was allocated" << std::endl;
+        return;
+    }
+
+    std::cout << ObjectsCapacity - free_.count() << " cells occupied, " << free_.count() << " are free\n";
+    for (size_t i = 0; i < ObjectsCapacity; ++i) {
+        std::cout << (i % 10);
+    }
+    std::cout << '\n';
+    for (size_t i = 0; i < ObjectsCapacity; ++i) {
+        std::cout << (free_[i] ? ' ' : '^');
+    }
+    std::cout << std::endl;
 }
