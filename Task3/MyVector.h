@@ -25,10 +25,13 @@ template<typename T, typename Allocator>
 void MyVector<T, Allocator>::push_back(const T &value) {
     T *newData_ = allocator_.allocate(size_ + 1);
     for (size_t i = 0; i < size_; ++i) {
-        std::construct_at(newData_ + i, std::move(data_[i]));
-        std::destroy_at(newData_ + i);
+        new(newData_ + i) T(std::move(data_[i]));
     }
-    std::construct_at(newData_ + size_, value);
+    new(newData_ + size_) T(value);
+
+    for (size_t i = 0; i < size_; ++i) {
+        newData_[i].~T();
+    }
     allocator_.deallocate(data_, size_);
     ++size_;
     data_ = newData_;
